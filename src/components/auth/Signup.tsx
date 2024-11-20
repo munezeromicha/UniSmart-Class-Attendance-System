@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { AcademicCapIcon } from '@heroicons/react/24/outline';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ const Signup = () => {
     confirmPassword: '',
     fullName: '',
     studentId: '',
-    role: 'student', // Default role
+    role: 'student', 
   });
   const [error, setError] = useState('');
   const { signup } = useAuth();
@@ -33,7 +34,7 @@ const Signup = () => {
     try {
       await signup({
         ...formData,
-        role: formData.role as "student" | "teacher" // Type assertion to fix type error
+        role: formData.role as "student" | "teacher" 
       });
       navigate('/dashboard');
     } catch (error) {
@@ -46,6 +47,11 @@ const Signup = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
+        <div className="flex justify-center">
+            <div className="bg-indigo-100 rounded-full p-3">
+              <AcademicCapIcon className="h-12 w-12 text-indigo-600" aria-hidden="true" />
+            </div>
+          </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             UniSmart Class Attendance
           </h2>
