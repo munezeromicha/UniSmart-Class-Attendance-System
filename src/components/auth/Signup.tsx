@@ -1,22 +1,24 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { AcademicCapIcon } from '@heroicons/react/24/outline';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { AcademicCapIcon } from "@heroicons/react/24/outline";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    fullName: '',
-    studentId: '',
-    role: 'student', 
+    email: "",
+    password: "",
+    confirmPassword: "",
+    fullName: "",
+    studentId: "",
+    role: "student",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -25,21 +27,33 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
+    // Validate that passwords match
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
+
     try {
+      const { confirmPassword, ...payload } = formData;
+
+      console.log("Submitting payload:", payload);
+
       await signup({
-        ...formData,
-        role: formData.role as "student" | "teacher" 
+        ...payload,
+        role: formData.role as "student" | "teacher",
       });
-      navigate('/dashboard');
+
+      navigate("/dashboard");
     } catch (error) {
-      setError('Signup failed. Please try again.');
-      console.error('Signup failed:', error);
+      if (error instanceof Error) {
+        setError(error.message); // Use error.message safely
+      } else {
+        setError("An unknown error occurred.");
+      }
+  
+      console.error("Signup failed:", error);
     }
   };
 
@@ -47,9 +61,12 @@ const Signup = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-        <div className="flex justify-center">
+          <div className="flex justify-center">
             <div className="bg-indigo-100 rounded-full p-3">
-              <AcademicCapIcon className="h-12 w-12 text-indigo-600" aria-hidden="true" />
+              <AcademicCapIcon
+                className="h-12 w-12 text-indigo-600"
+                aria-hidden="true"
+              />
             </div>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -59,9 +76,12 @@ const Signup = () => {
             Create your account
           </p>
         </div>
-        
+
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
             <span className="block sm:inline">{error}</span>
           </div>
         )}
@@ -69,7 +89,9 @@ const Signup = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-3">
             <div>
-              <label htmlFor="fullName" className="sr-only">Full Name</label>
+              <label htmlFor="fullName" className="sr-only">
+                Full Name
+              </label>
               <input
                 id="fullName"
                 name="fullName"
@@ -83,7 +105,9 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="sr-only">Email address</label>
+              <label htmlFor="email" className="sr-only">
+                Email address
+              </label>
               <input
                 id="email"
                 name="email"
@@ -97,7 +121,9 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="studentId" className="sr-only">Student ID</label>
+              <label htmlFor="studentId" className="sr-only">
+                Student ID
+              </label>
               <input
                 id="studentId"
                 name="studentId"
@@ -111,7 +137,9 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="role" className="sr-only">Role</label>
+              <label htmlFor="role" className="sr-only">
+                Role
+              </label>
               <select
                 id="role"
                 name="role"
@@ -125,7 +153,9 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="password" className="sr-only">Password</label>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
               <input
                 id="password"
                 name="password"
@@ -139,7 +169,9 @@ const Signup = () => {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+              <label htmlFor="confirmPassword" className="sr-only">
+                Confirm Password
+              </label>
               <input
                 id="confirmPassword"
                 name="confirmPassword"
@@ -163,7 +195,10 @@ const Signup = () => {
           </div>
 
           <div className="text-sm text-center">
-            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <Link
+              to="/login"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               Already have an account? Sign in
             </Link>
           </div>
