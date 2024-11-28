@@ -5,6 +5,7 @@ import AttendanceRecord from '../attendance/AttendanceRecord';
 import Reports from '../../components/report/Report';
 import { useAuth } from '../../context/AuthContext';
 import { FaGraduationCap, FaUser, FaGear, FaRightFromBracket } from 'react-icons/fa6';
+import { useTheme } from '../../context/ThemeContext';
 
 
 const Dashboard = () => {
@@ -21,13 +22,20 @@ const Dashboard = () => {
       console.error('Logout failed:', error);
     }
   };
+const { theme } = useTheme(); 
+const dashboardStyles = {
+  backgroundColor: theme === 'dark' ? '#0f0f0f' : '#f9fafb',
+  color: theme === 'dark' ? '#ffffff' : '#000000', 
+};
+const saveChanges= theme === 'dark' ? '#272727' : '#4F46E5'
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-lg">
+    
+    <div className="min-h-screen bg-gray-100" style={dashboardStyles}>
+      <nav className="bg-white shadow-lg "style={dashboardStyles}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <FaGraduationCap className="h-8 w-8 text-indigo-600 mr-2" />
+              <FaGraduationCap className="h-8 w-8  mr-2" />
               <h1 className="text-xl font-bold">UniSmart Dashboard</h1>
             </div>
 
@@ -39,7 +47,7 @@ const Dashboard = () => {
                   className="flex items-center space-x-2 focus:outline-none"
                 >
                   <span className="text-gray-700 mr-2"></span>
-                  <div className="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center text-white">
+                  <div className="h-10 w-10 rounded-full  flex items-center justify-center text-white" style={{backgroundColor:saveChanges}}>
                     {<FaUser className="h-8 w-8" />}
                   </div>
                 </button>

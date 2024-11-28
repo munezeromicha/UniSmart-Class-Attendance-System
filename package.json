@@ -30,8 +30,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "node api.js && react-scripts start",
+    "build": "node api.js && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -60,5 +60,8 @@
     "tailwindcss": "^3.4.15",
     "vite": "^6.0.0"
   },
-  "include": ["src", "vite-env.d.ts"]
+  "include": [
+    "src",
+    "vite-env.d.ts"
+  ]
 }
