@@ -12,9 +12,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
+import { ThemeProvider } from './context/ThemeContext';
 function App() {
   return (
-    <>
+    <ThemeProvider>
           <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -52,7 +53,7 @@ function App() {
         </div>
       </AuthProvider>
     </Router>
-    </>
+    </ThemeProvider>
 
   );
 }
