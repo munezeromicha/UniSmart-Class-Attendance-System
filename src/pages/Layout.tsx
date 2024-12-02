@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, Outlet } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 const navigation = [
   { name: 'Dashboard', href: '/' },
@@ -10,10 +11,18 @@ const navigation = [
   { name: 'Reports', href: '/reports' },
 ];
 
+
 export default function Layout() {
+  const { theme } = useTheme(); 
+const dashboardStyles = {
+  backgroundColor: theme === 'dark' ? '#222222' : '#f9fafb',
+  color: theme === 'dark' ? '#ffffff' : '#000000', 
+};
+
+const qrFgColor = theme === 'dark' ? '#0f0f0f' : '#6366F1'; 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Disclosure as="nav" className="bg-primary-600">
+    <div className="min-h-screen bg-gray-100" style={dashboardStyles}>
+      <Disclosure as="nav" style={{backgroundColor:qrFgColor }}>
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

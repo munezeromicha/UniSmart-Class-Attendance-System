@@ -93,9 +93,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem("access_token", userData.token);
 
       const user: User = {
-        _id: userData.id,
-        email: userData.email,
-        role: userData.role,
+        _id: userData.user._id,
+        email: userData.user.email,
+        role: userData.user.role,
       };
 
       localStorage.setItem("user", JSON.stringify(user));
