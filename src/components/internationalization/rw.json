@@ -1,0 +1,101 @@
+{
+  "landingPage": {
+    "mainContent": "Sisitemu ya UniSmart yo Gufata Abitabiriye"
+  },
+  "accessibility": {
+    "enableScreenReader": "Kora Musomyi wa Ecran",
+    "selectLanguage": "Hitamo Ururimi",
+    "screenReaderEnabled": "Uburyo bwo gusoma screen bwakozwe",
+    "menuLabel": "Amahitamo yo Kubona",
+    "toggleScreenReader": "Hindura Musomyi wa Ecran",
+    "screenReader": "Musomyi wa Ecran",
+    "toggleVoiceControl": "Hindura Igenzura ry'Ijwi",
+    "startVoice": "Tangiza Igenzura ry'Ijwi",
+    "stopVoice": "Hagarika Igenzura ry'Ijwi",
+    "readPage": "Soma Ibiri kuri Paje",
+    "toggleContrast": "Hindura Contrast yo Hejuru",
+    "contrast": "Contrast yo Hejuru",
+    "decreaseFont": "Gabanya Ingano y'Inyuguti",
+    "normalFont": "Ingano Isanzwe y'Inyuguti",
+    "increaseFont": "Ongera Ingano y'Inyuguti",
+    "shortcuts": "Utubuto Twihuse",
+    "shortcutLogin": "Jya ku Kwinjira",
+    "shortcutRegister": "Jya ku Kwiyandikisha",
+    "shortcutReadPage": "Soma Paje",
+    "shortcutVoice": "Hindura Igenzura ry'Ijwi",
+    "language": "Ururimi",
+    "reader": "Musomyi wa Ecran",
+    "voice": "Igenzura ry'Ijwi",
+    "theme": "Isura",
+    "read": "Soma ibiri kuri paje",
+    "active": "Uburyo bwakozwe"
+  },
+  "languages": {
+    "en": "Icyongereza",
+    "fr": "Igifaransa",
+    "rw": "Ikinyarwanda"
+  },
+  "hero": {
+    "title": "Sisitemu ya UniSmart yo Gufata Abitabiriye",
+    "description": "Hindura imicungire y'abitabiriye ishuri ukoresheje umuti wacu mushya.",
+    "getStarted": "Tangira"
+  },
+  "features": {
+    "title": "Ibiranga",
+    "digital": {
+      "title": "Gufata Abitabiriye mu Buryo bwa Dijitali",
+      "description": "Fata abitabiriye mu buryo bwa dijitali byoroshye"
+    },
+    "analytics": {
+      "title": "Isesengura",
+      "description": "Sesengura amakuru y'abitabiriye kugirango uteze imbere imicungire y'ishuri"
+    },
+    "notifications": {
+      "title": "Imenyesha",
+      "description": "Akira imenyesha ako kanya ku birebana n'abitabiriye"
+    },
+    "reports": {
+      "title": "Raporo",
+      "description": "Kora raporo zirambuye ku isesengura ry'abitabiriye"
+    }
+  },
+  "howItWorks": {
+    "title": "Uko Bikora",
+    "description": "Menya uko sisitemu yacu ishobora kugufasha gucunga neza abitabiriye",
+    "step1": {
+      "title": "Intambwe 1: Iyandikishe kuri konti",
+      "description": "Kora konti kugirango utangire"
+    },
+    "step2": {
+      "title": "Intambwe 2: Ongeraho ishuri ryawe",
+      "description": "Ongeraho ishuri ryawe muri sisitemu"
+    },
+    "step3": {
+      "title": "Intambwe 3: Fata abitabiriye mu buryo bwa dijitali",
+      "description": "Fata abitabiriye mu buryo bwa dijitali byoroshye"
+    },
+    "step4": {
+      "title": "Intambwe 4: Sesengura amakuru y'abitabiriye",
+      "description": "Sesengura amakuru y'abitabiriye kugirango uteze imbere imicungire y'ishuri"
+    }
+  },
+  "testimonials": {
+    "title": "Icyo Abakoresha Bavuga",
+    "description": "Umva abakoresha bacu bavuga uburambe bwabo kuri sisitemu yacu",
+    "1": {
+      "name": "Mugabo Jean",
+      "role": "Umwarimu",
+      "content": "Iyi sisitemu yatumye gufata abitabiriye byoroha cyane. Sinongera kwihangayikisha kubura impapuro z'abitabiriye cyangwa guhangana n'ibitabo by'abitabiriye bitanoze."
+    }
+  },
+  "contact": {
+    "title": "Twandikire",
+    "description": "Twandikire kugirango umenye byinshi kuri sisitemu yacu",
+    "submit": "Ohereza",
+    "submitting": "Ohereza...",
+    "success": "Ubuyoboka kuri twandikire! Tugabanye kuri twandikire",
+    "name": "Izina",
+    "email": "Imeyili",
+    "message": "Ubutumwa"
+  }
+}

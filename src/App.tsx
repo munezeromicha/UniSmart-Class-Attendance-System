@@ -1,61 +1,59 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/auth/ProtectedRoute';
+import ProtectedRoute from './ProtectedRoutes';
+import Navbar from './components/layout/Navbar';
 import Login from './components/auth/Login';
-import Signup from './components/auth/Signup';
-import Layout from './pages/Layout';
-import Dashboard from './pages/Dashboard/Dashboard';
-import StudentDashboard from './pages/Dashboard/StudentDashboard';
-import AttendanceHistory from './pages/attendance/AttendanceRecord';
-import Settings from './pages/settings/Settings';
+import InvitationSignup from './components/auth/InvitationSignup';
+import NotFound from './components/dashboard/NotFound';
+import AdminDashboard from './components/dashboard/AdminDashboard';
+import HodDashboard from './components/dashboard/HodDashboard';
+import LecturerDashboard from './components/dashboard/LecturerDashboard';
+import RepresentativeDashboard from './components/dashboard/RepresentativeDashboard';
+import StudentDashboard from './components/dashboard/Studentdashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ForgotPassword from './components/auth/ForgotPassword';
-import ResetPassword from './components/auth/ResetPassword';
 import { ThemeProvider } from './context/ThemeContext';
-function App() {
-  return (
-    <ThemeProvider>
-          <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-          <Router future={{ v7_relativeSplatPath: true }}>
-      <AuthProvider>
-        <div className="min-h-screen bg-gray-50">
-          <Routes>
-            {/* Public routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password/:token" element={<ResetPassword />} />
+import './config/config';
+import LandingPage from './pages/LandingPage';
 
-            Protected routes with Layout
-            <Route element={<ProtectedRoute />}>
-              <Route element={<Layout />}>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/student-dashboard" element={<StudentDashboard />} />
-                <Route path="/attendance-history" element={<AttendanceHistory />} />
-                <Route path="/settings" element={<Settings />} />
-
-              </Route>
-            </Route>
-          </Routes>
-        </div>
-      </AuthProvider>
-    </Router>
-    </ThemeProvider>
-
-  );
+interface RoleProtectedRouteProps {
+  children: JSX.Element;
+  allowedRole: string;
 }
 
-export default App;
+const RoleProtectedRoute = ({ children, allowedRole }: RoleProtectedRouteProps) => (
+  <ProtectedRoute>
+    {(props) => props.user?.role?.toLowerCase() === allowedRole.toLowerCase() 
+      ? children 
+      : <NotFound />
+    }
+  </ProtectedRoute>
+);
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <ThemeProvider>
+        <div className="min-h-screen bg-gray-50">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup/:role" element={<InvitationSignup />} />
+            
+            <Route path="/admin" element={<RoleProtectedRoute allowedRole="admin"><AdminDashboard /></RoleProtectedRoute>} />
+            <Route path="/hod" element={<RoleProtectedRoute allowedRole="hod"><HodDashboard /></RoleProtectedRoute>} />
+            <Route path="/lecturer" element={<RoleProtectedRoute allowedRole="lecturer"><LecturerDashboard /></RoleProtectedRoute>} />
+            <Route path="/class_rep" element={<RoleProtectedRoute allowedRole="class_rep"><RepresentativeDashboard /></RoleProtectedRoute>} />
+            <Route path="/student" element={<RoleProtectedRoute allowedRole="student"><StudentDashboard /></RoleProtectedRoute>} />
+            
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <ToastContainer />
+        </div>
+        </ThemeProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}

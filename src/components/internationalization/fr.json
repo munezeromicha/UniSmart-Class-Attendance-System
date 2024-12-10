@@ -1,0 +1,101 @@
+{
+  "landingPage": {
+    "mainContent": "Système de Présence UniSmart"
+  },
+  "accessibility": {
+    "enableScreenReader": "Activer le Lecteur d'Écran",
+    "selectLanguage": "Sélectionner la Langue",
+    "screenReaderEnabled": "Mode lecteur d'écran activé",
+    "menuLabel": "Options d'Accessibilité",
+    "toggleScreenReader": "Activer/Désactiver le Lecteur d'Écran",
+    "screenReader": "Lecteur d'Écran",
+    "toggleVoiceControl": "Activer/Désactiver le Contrôle Vocal",
+    "startVoice": "Démarrer le Contrôle Vocal",
+    "stopVoice": "Arrêter le Contrôle Vocal",
+    "readPage": "Lire le Contenu de la Page",
+    "toggleContrast": "Activer/Désactiver le Contraste Élevé",
+    "contrast": "Contraste Élevé",
+    "decreaseFont": "Diminuer la Taille de la Police",
+    "normalFont": "Taille de Police Normale",
+    "increaseFont": "Augmenter la Taille de la Police",
+    "shortcuts": "Raccourcis Clavier",
+    "shortcutLogin": "Aller à la Connexion",
+    "shortcutRegister": "Aller à l'Inscription",
+    "shortcutReadPage": "Lire la Page",
+    "shortcutVoice": "Activer/Désactiver le Contrôle Vocal",
+    "language": "Langue",
+    "reader": "Lecteur d'Écran",
+    "voice": "Contrôle Vocal",
+    "theme": "Thème",
+    "read": "Lire le contenu de la page",
+    "active": "Activé"
+  },
+  "languages": {
+    "en": "Anglais",
+    "fr": "Français",
+    "rw": "Kinyarwanda"
+  },
+  "hero": {
+    "title": "Système de Présence UniSmart",
+    "description": "Transformez la gestion des présences en classe avec notre solution innovante.",
+    "getStarted": "Commencer"
+  },
+  "features": {
+    "title": "Fonctionnalités",
+    "digital": {
+      "title": "Présence Numérique",
+      "description": "Prenez les présences numériquement en toute simplicité"
+    },
+    "analytics": {
+      "title": "Analyses",
+      "description": "Analysez les données de présence pour améliorer la gestion de la classe"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Recevez des notifications en temps réel pour les mises à jour de présence"
+    },
+    "reports": {
+      "title": "Rapports",
+      "description": "Générez des rapports détaillés pour l'analyse des présences"
+    }
+  },
+  "howItWorks": {
+    "title": "Comment ça Marche",
+    "description": "Découvrez comment notre système peut vous aider à gérer efficacement les présences",
+    "step1": {
+      "title": "Étape 1: Créez un compte",
+      "description": "Créez un compte pour commencer"
+    },
+    "step2": {
+      "title": "Étape 2: Ajoutez votre classe",
+      "description": "Ajoutez votre classe au système"
+    },
+    "step3": {
+      "title": "Étape 3: Prenez les présences numériquement",
+      "description": "Prenez les présences numériquement en toute simplicité"
+    },
+    "step4": {
+      "title": "Étape 4: Analysez les données de présence",
+      "description": "Analysez les données de présence pour améliorer la gestion de la classe"
+    }
+  },
+  "testimonials": {
+    "title": "Ce que Disent Nos Utilisateurs",
+    "description": "Écoutez nos utilisateurs parler de leur expérience avec notre système",
+    "1": {
+      "name": "Jean Dupont",
+      "role": "Enseignant",
+      "content": "Ce système a rendu la prise des présences tellement plus facile. Je n'ai plus à m'inquiéter de perdre les feuilles de présence ou de gérer des registres désordonnés."
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "description": "Contactez-nous pour en savoir plus sur notre système",
+    "submit": "Envoyer",
+    "submitting": "Envoi en cours...",
+    "success": "Merci pour votre contact! Nous vous contacterons bientôt.",
+    "name": "Nom",
+    "email": "Email",
+    "message": "Message"
+  }
+}

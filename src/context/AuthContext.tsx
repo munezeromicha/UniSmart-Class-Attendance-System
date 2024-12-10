@@ -1,230 +1,114 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
-
-interface User {
-  _id: string;
-  //   name: string;
-  email: string;
-  role: "student" | "faculty" | "admin";
-}
-
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  updateUserProfile: (data: any) => Promise<void>;
-  signup: (formData: SignupFormData) => Promise<void>;
-  isAuthenticated: boolean;
-}
-
-interface SignupFormData {
-  email: string;
-  password: string;
-  fullName: string;
-  studentId: string;
-  role: "student" | "teacher";
-  confirmPassword?: string;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { ReactNode, useEffect, useState } from 'react';
+import { AuthContext } from '../hooks/useAuth';
+import { User } from '../types/user';
+import ApiService from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const token = localStorage.getItem("access_token");
-        const storedUser = localStorage.getItem("user");
-
-        if (token && storedUser) {
-          setUser(JSON.parse(storedUser));
-          setIsAuthenticated(true);
-        } else {
-          // Clear everything if token is missing
-          localStorage.removeItem("user");
-          localStorage.removeItem("access_token");
-          setUser(null);
-          setIsAuthenticated(false);
-        }
-      } catch (error) {
-        console.error("Auth check failed:", error);
-        // Clear everything on error
-        localStorage.removeItem("user");
-        localStorage.removeItem("access_token");
-        setUser(null);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const login = async (email: string, password: string) => {
+    setIsLoading(true);
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      console.log('Making login API call...');
+      const response = await ApiService.login(email, password);
+      
+      console.log('API Response:', response);
 
-      if (!response.ok) {
-        throw new Error("Login failed");
+      if (response.error) {
+        throw new Error(response.error);
       }
 
-      const userData = await response.json();
+      // Handle nested structure
+      const userData = (response.data as { user: User; token: string }).user;
+      const token = (response.data as { user: User; token: string }).token;
 
-      // Store the access token
-      localStorage.setItem("access_token", userData.token);
+      if (!userData || !token) {
+        throw new Error('Invalid response from server');
+      }
 
-      const user: User = {
-        _id: userData.user._id,
-        email: userData.user.email,
-        role: userData.user.role,
-      };
+      localStorage.setItem('token', token);
+      setUser(userData);
 
-      localStorage.setItem("user", JSON.stringify(user));
-      setUser(user);
-      setIsAuthenticated(true);
+      console.log('User data:', userData);
+      if (userData.role) {
+        console.log('Redirecting to role:', userData.role);
+        redirectBasedOnRole(userData.role);
+      }
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error('Login error:', error);
       throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const redirectBasedOnRole = (role: string) => {
+    console.log('Attempting to redirect to:', role.toLowerCase());
+    switch (role.toLowerCase()) {
+      case 'admin':
+        navigate('/admin', { replace: true });
+        break;
+      case 'hod':
+        navigate('/hod', { replace: true });
+        break;
+      case 'lecturer':
+        navigate('/lecturer', { replace: true });
+        break;
+      case 'class_rep':
+        navigate('/class_rep', { replace: true });
+        break;
+      case 'student':
+        navigate('/student', { replace: true });
+        break;
+      default:
+        navigate('/not-found', { replace: true });
     }
   };
 
   const logout = async () => {
     try {
-      const token = localStorage.getItem("access_token");
-
-      // Make API call to logout
-      await fetch("https://wizzy-africa-backend.onrender.com/api/auth/logout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await ApiService.logout();
     } catch (error) {
-      console.error("Logout API call failed:", error);
+      console.error('Logout error:', error);
     } finally {
-      // Always clear local storage and state, even if API call fails
-      localStorage.removeItem("user");
-      localStorage.removeItem("access_token");
+      localStorage.removeItem('token');
       setUser(null);
-      setIsAuthenticated(false);
     }
   };
 
-  const updateUserProfile = async (data: Partial<User>) => {
-    try {
-      // Make API call to update user profile
-      const response = await fetch("YOUR_API_ENDPOINT/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(data),
-      });
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
-      if (!response.ok) {
-        throw new Error("Profile update failed");
+  const checkAuth = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await ApiService.checkAuth();
+        if (response.data) {
+          setUser(response.data as User);
+        }
+      } catch (error) {
+        console.error('Check auth error:', error);
+        localStorage.removeItem('token');
+        setUser(null);
       }
-
-      if (!user) return;
-      const updatedUser: User = {
-        _id: user._id,
-        // name: data.name ?? user.name,
-        email: data.email ?? user.email,
-        role: data.role ?? user.role,
-      };
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-    } catch (error) {
-      console.error("Profile update failed:", error);
-      throw error;
-    }
-  };
-  const BACKEND_URL = process.env.BACKEND_URL;
-  console.log(BACKEND_URL, "backend url");
-
-  const signup = async (formData: SignupFormData) => {
-    try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          fullName: formData.fullName,
-          studentId: formData.studentId,
-          role: formData.role,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json(); // Parse the error response
-        throw new Error(errorData.message || "Signup failed");
-      }
-
-      const userData = await response.json();
-      const newUser: User = {
-        _id: userData._id,
-        email: formData.email,
-        role: formData.role === "teacher" ? "faculty" : "student",
-      };
-
-      localStorage.setItem("user", JSON.stringify(newUser));
-      localStorage.setItem("token", userData.token); // If your API returns a token
-      setUser(newUser);
-    } catch (error) {
-      console.error("Signup failed:", error);
-
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-
-      throw new Error("An unknown error occurred.");
     }
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        login,
-        logout,
-        updateUserProfile,
-        signup,
-        isAuthenticated,
-      }}
-    >
-      {!loading && children}
+    <AuthContext.Provider value={{
+      user,
+      isAuthenticated: !!user,
+      isLoading,
+      login,
+      logout,
+      checkAuth
+    }}>
+      {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 }

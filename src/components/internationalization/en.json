@@ -1,0 +1,111 @@
+{
+    "landingPage": {
+      "mainContent": "UniSmart Class Attendance System"
+    },
+    "accessibility": {
+      "enableScreenReader": "Enable Screen Reader",
+      "selectLanguage": "Select Language",
+      "screenReaderEnabled": "Screen reader mode enabled",
+      "menuLabel": "Accessibility Options",
+      "toggleScreenReader": "Toggle Screen Reader",
+      "screenReader": "Screen Reader",
+      "toggleVoiceControl": "Toggle Voice Control",
+      "startVoice": "Start Voice Control",
+      "stopVoice": "Stop Voice Control",
+      "readPage": "Read Page Content",
+      "toggleContrast": "Toggle High Contrast",
+      "contrast": "High Contrast",
+      "decreaseFont": "Decrease Font Size",
+      "normalFont": "Normal Font Size",
+      "increaseFont": "Increase Font Size",
+      "shortcuts": "Keyboard Shortcuts",
+      "shortcutLogin": "Go to Login",
+      "shortcutRegister": "Go to Register",
+      "shortcutReadPage": "Read Page",
+      "shortcutVoice": "Toggle Voice Control",
+      "language": "Language",
+      "reader": "Screen Reader",
+      "voice": "Voice Control",
+      "theme": "Theme",
+      "read": "Read page content",
+      "active": "Active"
+    },
+    "languages": {
+      "en": "English",
+      "fr": "French",
+      "rw": "Kinyarwanda"
+    },
+    "hero": {
+      "title": "UniSmart Class Attendance System",
+      "description": "Transform your classroom attendance management with our innovative solution.",
+      "getStarted": "Get Started"
+    },
+    "features": {
+      "title": "Features",
+      "digital": {
+        "title": "Digital Attendance",
+        "description": "Take attendance digitally with ease"
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "Analyze attendance data to improve classroom management"
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Receive real-time notifications for attendance updates"
+      },
+      "reports": {
+        "title": "Reports",
+        "description": "Generate detailed reports for attendance analysis"
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "description": "Learn how our system can help you manage attendance effectively",
+      "step1": {
+        "title": "Step 1: Register for an account",
+        "description": "Create an account to get started"
+      },
+      "step2": {
+        "title": "Step 2: Add your class",
+        "description": "Add your class to the system"
+      },
+      "step3": {
+        "title": "Step 3: Take attendance digitally",
+        "description": "Take attendance digitally with ease"
+      },
+      "step4": {
+        "title": "Step 4: Analyze attendance data",
+        "description": "Analyze attendance data to improve classroom management"
+      }
+    },
+    "testimonials": {
+      "title": "What Our Users Say",
+      "description": "Hear from our users about their experience with our system",
+      "1": {
+        "name": "Michael MUNEZERO",
+        "role": "Teacher",
+        "content": "This system has made taking attendance so much easier. I no longer have to worry about misplacing attendance sheets or dealing with messy attendance books."
+      },
+      "2": {
+        "name": "Lucie ISHIMWE",
+        "role": "Student",
+        "content": "This system has made taking attendance so much easier. I no longer have to worry about misplacing attendance sheets or dealing with messy attendance books."
+      },
+      "3": {
+        "name": "Emmanuel NZAYISENGA",
+        "role": "Student",
+        "content": "This system has made taking attendance so much easier. I no longer have to worry about misplacing attendance sheets or dealing with messy attendance books."
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "Get in touch with us to learn more about our system",
+      "submit":"Submit",
+      "submitting":"Submitting...",
+      "success":"Thank you for contacting us! We will get back to you soon.",
+      "name":"Name",
+      "email":"Email",
+      "message":"Message"
+    }
+  }
