@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import InviteUser from "../auth/InviteUser";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTheme } from '../../context/ThemeContext';
 interface HOD {
   _id: string;
   firstName: string;
@@ -12,6 +13,7 @@ interface HOD {
 }
 
 export default function AdminDashboard() {
+  const { theme } = useTheme();
   const [hods, setHods] = useState<HOD[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -122,8 +124,14 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
+    <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ${
+      theme === "dark"
+        ? "bg-background-dark"
+        : "bg-background-light"
+    } `}>
+      <h1 className={`text-3xl font-bold mb-8 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+        Admin Dashboard
+      </h1>
 
       {error && (
         <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
@@ -132,40 +140,40 @@ export default function AdminDashboard() {
       )}
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div className="bg-white rounded-lg shadow">
+        <div className={`rounded-lg shadow ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Invite HOD
             </h2>
-            <InviteUser departments={departments}
-            role="HOD"
-             />
+            <InviteUser departments={departments} role="HOD" />
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow">
+        <div className={`rounded-lg shadow ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Manage HODs
             </h2>
 
             {isLoading ? (
               <div className="flex justify-center items-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                <div className={`animate-spin rounded-full h-8 w-8 border-b-2 ${theme === 'dark' ? 'border-white' : 'border-gray-900'}`}></div>
               </div>
             ) : (
               <div className="overflow-hidden">
                 {hods.length > 0 ? (
-                  <ul className="divide-y divide-gray-200">
+                  <ul className={`divide-y ${theme === 'dark' ? 'divide-gray-700' : 'divide-gray-200'}`}>
                     {hods.map((hod) => (
-                      <li key={hod._id || hod._id} className="py-4">
+                      <li key={hod._id} className="py-4">
                         <div className="flex items-center justify-between">
                           <div>
-                            <h3 className="text-lg font-medium text-gray-900">
+                            <h3 className={`text-lg font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                               {hod.firstName} {hod.lastName}
                             </h3>
-                            <p className="text-sm text-gray-500">{hod.email}</p>
-                            <p className="text-sm text-gray-500">
+                            <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                              {hod.email}
+                            </p>
+                            <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                               {hod.department}
                             </p>
                             <span
@@ -183,9 +191,7 @@ export default function AdminDashboard() {
                               onClick={() =>
                                 toggleHODStatus(
                                   hod._id,
-                                  hod.status === "active"
-                                    ? "disabled"
-                                    : "active"
+                                  hod.status === "active" ? "disabled" : "active"
                                 )
                               }
                               className={`px-4 py-2 rounded-md text-sm font-medium text-white ${
@@ -210,7 +216,9 @@ export default function AdminDashboard() {
                   </ul>
                 ) : (
                   <div className="text-center py-8">
-                    <p className="text-gray-500">No HODs found</p>
+                    <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                      No HODs found
+                    </p>
                   </div>
                 )}
               </div>

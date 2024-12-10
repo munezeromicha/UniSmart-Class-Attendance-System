@@ -53,7 +53,7 @@ export default function RepresentativeDashboard() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Invite Students</h2>
           <InviteUser
-            role="student"
+            role="STUDENT"
             departments={departments}
             classes={[user?.class || '']}
           />

@@ -28,7 +28,9 @@
       "voice": "Voice Control",
       "theme": "Theme",
       "read": "Read page content",
-      "active": "Active"
+      "active": "Active",
+      "reading": "Reading...",
+      "voiceControl": "Voice Control..."
     },
     "languages": {
       "en": "English",

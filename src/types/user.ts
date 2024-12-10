@@ -5,6 +5,6 @@ export interface User {
   email: string;
   department?: string;
   class?: string;
-  role: 'ADMIN' | 'HOD' | 'LECTURER' | 'REPRESENTATIVE' | 'STUDENT';
+  role: 'ADMIN' | 'HOD' | 'LECTURER' | 'CLASS_REP' | 'STUDENT';
   registrationNumber?: string;
 }

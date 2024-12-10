@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../context/ThemeContext';
 
 interface InviteUserProps {
   departments: string[];
@@ -18,6 +19,7 @@ type InvitationData = {
 
 export default function InviteUser({ departments, classes }: InviteUserProps) {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<InvitationData>({
     email: '',
@@ -40,44 +42,26 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
     return rolePermissions[user.role.toUpperCase() as keyof typeof rolePermissions] || [];
   };
 
+  useEffect(() => {
+    if (user?.role === 'CLASS_REP') {
+      setFormData(prev => ({
+        ...prev,
+        role: 'STUDENT'
+      }));
+    }
+  }, [user?.role]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      let inviteData: InvitationData;
-
-      // Format data based on role being invited
-      switch (formData.role) {
-        case 'HOD':
-          inviteData = {
-            email: formData.email,
-            role: formData.role,
-            school: formData.school,
-            department: formData.department
-          };
-          break;
-
-        case 'LECTURER':
-          inviteData = {
-            email: formData.email,
-            role: formData.role,
-            department: formData.department
-          };
-          break;
-
-        case 'CLASS_REP':
-          inviteData = {
-            email: formData.email,
-            role: formData.role,
-            department: formData.department,
-            class: formData.class
-          };
-          break;
-
-        default:
-          throw new Error('Invalid role selected');
-      }
+      // Ensure role is set for CLASS_REP
+      const inviteData = {
+        email: formData.email,
+        role: user?.role === 'CLASS_REP' ? 'STUDENT' : formData.role,
+        department: formData.department
+      };
 
       const response = await fetch('http://localhost:5000/api/invitations', {
         method: 'POST',
@@ -93,10 +77,10 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
         throw new Error(errorData.message || 'Failed to send invitation');
       }
 
-      toast.success(`${formData.role.replace('_', ' ')} invitation sent successfully!`);
+      toast.success('Invitation sent successfully!');
       setFormData({
         email: '',
-        role: '',
+        role: user?.role === 'CLASS_REP' ? 'STUDENT' : '',
         department: '',
         school: '',
         class: ''
@@ -112,7 +96,7 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
           Email
         </label>
         <input
@@ -125,8 +109,9 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
         />
       </div>
 
+      {user?.role !== 'CLASS_REP' && (
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
           Role
         </label>
         <select
@@ -144,11 +129,16 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
           ))}
         </select>
       </div>
+    )}
+
+{user?.role === 'CLASS_REP' && (
+      <input type="hidden" value="STUDENT" onChange={(e) => setFormData({ ...formData, role: e.target.value })} />
+    )}
 
       {/* School field - Only for HOD invitations */}
       {user?.role === 'ADMIN' && formData.role === 'HOD' && (
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
             School
           </label>
           <select
@@ -169,7 +159,7 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
       )}
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
           Department
         </label>
         <select
@@ -191,7 +181,7 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
       {/* Class field - Only for CLASS_REP invitations */}
       {formData.role === 'CLASS_REP' && classes && (
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
             Class
           </label>
           <select

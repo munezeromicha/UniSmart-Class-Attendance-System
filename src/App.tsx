@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ThemeProvider } from './context/ThemeContext';
 import './config/config';
 import LandingPage from './pages/LandingPage';
+import { HoverToReadProvider } from './context/HoverToReadContext';
 
 interface RoleProtectedRouteProps {
   children: JSX.Element;
@@ -35,6 +36,7 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <ThemeProvider>
+          <HoverToReadProvider>
         <div className="min-h-screen bg-gray-50">
           <Navbar />
           <Routes>
@@ -52,6 +54,7 @@ export default function App() {
           </Routes>
           <ToastContainer />
         </div>
+        </HoverToReadProvider>
         </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
