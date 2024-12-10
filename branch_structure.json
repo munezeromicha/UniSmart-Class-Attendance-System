@@ -1,0 +1,33 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "attendence",
+    "fix-student-data",
+    "fixing-feching-errors",
+    "ft-improving-ui",
+    "main",
+    "origin",
+    "scanqrcode",
+    "setting"
+  ],
+  "parent": {
+    "attendence": "main",
+    "fix-student-data": "main",
+    "fixing-feching-errors": "main",
+    "ft-improving-ui": "main",
+    "main": null,
+    "origin": "main",
+    "scanqrcode": "main",
+    "setting": "main"
+  },
+  "order": [
+    "main",
+    "attendence",
+    "fix-student-data",
+    "fixing-feching-errors",
+    "ft-improving-ui",
+    "origin",
+    "scanqrcode",
+    "setting"
+  ]
+}

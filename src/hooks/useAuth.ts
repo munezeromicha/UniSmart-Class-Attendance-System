@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 import { User } from '../types/user';
 
 export interface AuthContextType {
+
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;

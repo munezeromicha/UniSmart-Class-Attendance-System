@@ -30,6 +30,7 @@ class ApiService {
       }
 
       const data = await response.json();
+      console.log(data,'data to check tooooooooooooo')
       return { data, token: data.token };
     } catch (error) {
       return { error: error instanceof Error ? error.message : 'An error occurred' };
