@@ -95,6 +95,7 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Email input */}
       <div>
         <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
           Email
@@ -103,39 +104,69 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
           type="email"
           required
           value={formData.email}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+          className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm 
+            ${theme === 'dark' 
+              ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
+              : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+            } focus:ring-indigo-500 focus:border-indigo-500`}
           placeholder="Enter email address"
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         />
       </div>
-
+  
+      {/* Role select */}
       {user?.role !== 'CLASS_REP' && (
+        <div>
+          <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+            Role
+          </label>
+          <select
+            required
+            value={formData.role}
+            className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm 
+              ${theme === 'dark'
+                ? 'bg-gray-700 border-gray-600 text-white' 
+                : 'bg-white border-gray-300 text-gray-900'
+              } focus:ring-indigo-500 focus:border-indigo-500`}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+            aria-label="Select role"
+          >
+            <option value="">Select Role</option>
+            {getAllowedRoles().map((role) => (
+              <option key={role} value={role}>
+                {role.replace('_', ' ')}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+  
+      {/* Department select */}
       <div>
         <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
-          Role
+          Department
         </label>
         <select
           required
-          value={formData.role}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-          onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-          aria-label="Select role"
+          value={formData.department}
+          className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm 
+            ${theme === 'dark'
+              ? 'bg-gray-700 border-gray-600 text-white' 
+              : 'bg-white border-gray-300 text-gray-900'
+            } focus:ring-indigo-500 focus:border-indigo-500`}
+          onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+          aria-label="Select department"
         >
-          <option value="">Select Role</option>
-          {getAllowedRoles().map((role) => (
-            <option key={role} value={role}>
-              {role.replace('_', ' ')}
+          <option value="">Select Department</option>
+          {departments.map((dept) => (
+            <option key={dept} value={dept}>
+              {dept}
             </option>
           ))}
         </select>
       </div>
-    )}
-
-{user?.role === 'CLASS_REP' && (
-      <input type="hidden" value="STUDENT" onChange={(e) => setFormData({ ...formData, role: e.target.value })} />
-    )}
-
-      {/* School field - Only for HOD invitations */}
+  
+      {/* School select - Only for HOD invitations */}
       {user?.role === 'ADMIN' && formData.role === 'HOD' && (
         <div>
           <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
@@ -144,7 +175,11 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
           <select
             required
             value={formData.school}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+            className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm 
+              ${theme === 'dark'
+                ? 'bg-gray-700 border-gray-600 text-white' 
+                : 'bg-white border-gray-300 text-gray-900'
+              } focus:ring-indigo-500 focus:border-indigo-500`}
             onChange={(e) => setFormData({ ...formData, school: e.target.value })}
             aria-label="Select school"
           >
@@ -157,28 +192,8 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
           </select>
         </div>
       )}
-
-      <div>
-        <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
-          Department
-        </label>
-        <select
-          required
-          value={formData.department}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-          onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-          aria-label="Select department"
-        >
-          <option value="">Select Department</option>
-          {departments.map((dept) => (
-            <option key={dept} value={dept}>
-              {dept}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Class field - Only for CLASS_REP invitations */}
+  
+      {/* Class select */}
       {formData.role === 'CLASS_REP' && classes && (
         <div>
           <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
@@ -187,7 +202,11 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
           <select
             required
             value={formData.class}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+            className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm 
+              ${theme === 'dark'
+                ? 'bg-gray-700 border-gray-600 text-white' 
+                : 'bg-white border-gray-300 text-gray-900'
+              } focus:ring-indigo-500 focus:border-indigo-500`}
             onChange={(e) => setFormData({ ...formData, class: e.target.value })}
             aria-label="Select class"
           >
@@ -204,7 +223,7 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
       <button
         type="submit"
         disabled={isLoading}
-        className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 
+        className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-indigo-600 shadow-lg
           ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-700'}`}
       >
         {isLoading ? (

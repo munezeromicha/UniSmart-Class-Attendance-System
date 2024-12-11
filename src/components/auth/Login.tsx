@@ -2,6 +2,7 @@ import { useState } from "react";
 // import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../hooks/useAuth";
 import { useTheme } from "../../context/ThemeContext";
+import { FaGraduationCap } from 'react-icons/fa';
 
 export default function Login() {
   const { theme } = useTheme();
@@ -43,6 +44,15 @@ export default function Login() {
       } flex flex-col justify-center py-12 sm:px-6 lg:px-8`}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="flex justify-center mb-6">
+          <FaGraduationCap 
+            className={`h-12 w-12 ${
+              theme === "dark" 
+                ? "text-indigo-400" 
+                : "text-indigo-600"
+            }`}
+          />
+        </div>
         <h2
           className={`text-center text-3xl font-extrabold ${
             theme === "dark" ? "text-white" : "text-gray-800"

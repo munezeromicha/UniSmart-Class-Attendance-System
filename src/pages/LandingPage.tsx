@@ -11,7 +11,7 @@ import Contact from './Contact';
 const LandingPage: React.FC = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
-  const [isScreenReaderEnabled, setIsScreenReaderEnabled] = useState(false);
+  const [isScreenReaderEnabled] = useState(false);
 
   return (
     <div 
@@ -22,7 +22,6 @@ const LandingPage: React.FC = () => {
       aria-label={t('landingPage.mainContent')}
     >
       <AccessibilityMenu
-        onScreenReaderToggle={setIsScreenReaderEnabled}
         onThemeToggle={toggleTheme}
         ariaLabel={t('accessibility.menuLabel')}
       />

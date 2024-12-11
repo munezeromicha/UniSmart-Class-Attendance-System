@@ -5,7 +5,8 @@ import {
     UserPlusIcon, 
     QrCodeIcon, 
     ChartBarIcon 
-  } from '@heroicons/react/24/outline';
+} from '@heroicons/react/24/outline';
+
 const HowItWorks: React.FC = () => {
   const { t } = useTranslation();
 
@@ -15,7 +16,7 @@ const HowItWorks: React.FC = () => {
       title: 'howItWorks.step1.title',
       description: 'howItWorks.step1.description',
       icon: (
-        <UserPlusIcon className="w-full h-full text-primary-light dark:text-primary-dark" />
+        <UserPlusIcon className="w-16 h-16 text-gray-900 dark:text-white" />
       )
     },
     {
@@ -23,7 +24,7 @@ const HowItWorks: React.FC = () => {
       title: 'howItWorks.step2.title',
       description: 'howItWorks.step2.description',
       icon: (
-        <QrCodeIcon className="w-full h-full text-primary-light dark:text-primary-dark" />
+        <ChartBarIcon className="w-16 h-16 text-gray-900 dark:text-white" />
       )
     },
     {
@@ -31,13 +32,13 @@ const HowItWorks: React.FC = () => {
       title: 'howItWorks.step3.title',
       description: 'howItWorks.step3.description',
       icon: (
-        <ChartBarIcon className="w-full h-full text-primary-light dark:text-primary-dark" />
+        
+        <QrCodeIcon className="w-16 h-16 text-gray-900 dark:text-white" />
       )
     }
   ];
 
   return (
-    // 3. Added background color and min-height to make section visible
     <section className="py-20 px-4 min-h-screen bg-white dark:bg-gray-900" aria-labelledby="how-it-works-title">
       <div className="max-w-7xl mx-auto">
         <motion.h2 
@@ -45,7 +46,7 @@ const HowItWorks: React.FC = () => {
           className="text-3xl md:text-4xl font-bold text-center text-gray-900 dark:text-white mb-16"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }} // 4. Added viewport option
+          viewport={{ once: true }}
         >
           {t('howItWorks.title')}
         </motion.h2>
@@ -59,7 +60,7 @@ const HowItWorks: React.FC = () => {
               } items-center gap-12`}
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }} // 4. Added viewport option
+              viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
               <div className="flex-1 space-y-4">

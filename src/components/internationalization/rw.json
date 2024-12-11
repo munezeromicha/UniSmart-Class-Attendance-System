@@ -36,7 +36,7 @@
     "rw": "Ikinyarwanda"
   },
   "hero": {
-    "title": "Sisitemu ya UniSmart yo Gufata Abitabiriye",
+    "title": "Sisitemu ya UniSmart yo Gufata Abitabiriye mu ishuri",
     "description": "Hindura imicungire y'abitabiriye ishuri ukoresheje umuti wacu mushya.",
     "getStarted": "Tangira"
   },
@@ -84,6 +84,16 @@
     "description": "Umva abakoresha bacu bavuga uburambe bwabo kuri sisitemu yacu",
     "1": {
       "name": "Mugabo Jean",
+      "role": "Umwarimu",
+      "content": "Iyi sisitemu yatumye gufata abitabiriye byoroha cyane. Sinongera kwihangayikisha kubura impapuro z'abitabiriye cyangwa guhangana n'ibitabo by'abitabiriye bitanoze."
+    },
+    "2": {
+      "name": "Lucie ISHIMWE",
+      "role": "Umwarimu",
+      "content": "Iyi sisitemu yatumye gufata abitabiriye byoroha cyane. Sinongera kwihangayikisha kubura impapuro z'abitabiriye cyangwa guhangana n'ibitabo by'abitabiriye bitanoze."
+    },
+    "3": {
+      "name": "Emmanuel NZAYISENGA",
       "role": "Umwarimu",
       "content": "Iyi sisitemu yatumye gufata abitabiriye byoroha cyane. Sinongera kwihangayikisha kubura impapuro z'abitabiriye cyangwa guhangana n'ibitabo by'abitabiriye bitanoze."
     }

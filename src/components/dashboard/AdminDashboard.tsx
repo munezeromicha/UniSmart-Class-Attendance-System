@@ -124,11 +124,12 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ${
-      theme === "dark"
-        ? "bg-background-dark"
-        : "bg-background-light"
-    } `}>
+    <div className={`min-h-screen w-full ${
+      theme === 'dark' 
+        ? 'bg-gray-900 text-white' 
+        : 'bg-gray-50 text-gray-900'
+    }`}>
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className={`text-3xl font-bold mb-8 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
         Admin Dashboard
       </h1>
@@ -140,7 +141,11 @@ export default function AdminDashboard() {
       )}
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div className={`rounded-lg shadow ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+        <div className={`rounded-lg shadow ${
+        theme === "dark"
+          ? "bg-background-dark"
+          : "bg-background-light"
+      } `}>
           <div className="p-6">
             <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Invite HOD
@@ -149,7 +154,11 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className={`rounded-lg shadow ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+        <div className={`rounded-lg shadow ${
+        theme === "dark"
+          ? "bg-background-dark"
+          : "bg-background-light"
+      } `}>
           <div className="p-6">
             <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               Manage HODs
@@ -226,6 +235,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import InviteUser from '../auth/InviteUser';
 import { useAuth } from '../../hooks/useAuth';
-
+import { useTheme } from '../../context/ThemeContext';
 interface Staff {
   id: string;
   firstName: string;
@@ -14,6 +14,7 @@ interface Staff {
 }
 
 export default function HodDashboard() {
+  const { theme } = useTheme();
   const [staff, setStaff] = useState<Staff[]>([]);
   const [classes] = useState(['Level 1', 'Level 2', 'Level 3', 'Level 4']);
   const { user } = useAuth();
@@ -61,9 +62,14 @@ export default function HodDashboard() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Invite Staff Section */}
+    <div className={`min-h-screen w-full ${
+      theme === 'dark' 
+        ? 'bg-gray-900 text-white' 
+        : 'bg-gray-50 text-gray-900'
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+
         <div className="space-y-6">
           <div>
             <h2 className="text-2xl font-bold mb-4">Invite Lecturer</h2>
@@ -117,5 +123,7 @@ export default function HodDashboard() {
         </div>
       </div>
     </div>
+    </div>
+
   );
 }
