@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
+    "@zxing/browser": "^0.1.5",
     "@zxing/library": "^0.21.3",
     "framer-motion": "^11.13.3",
     "i18next": "^24.0.5",
@@ -20,7 +21,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^15.1.4",
-    "react-qr-reader": "^2.0.0",
     "react-qr-scanner": "^1.0.0-alpha.11",
     "react-router-dom": "^6.28.0",
     "react-toastify": "^10.0.6"

@@ -69,9 +69,10 @@ export default function LecturerDashboard() {
     setSelectedClass("");
     setQrData(""); // Reset QR code data
   };
-
+const attendenceOwner=localStorage.getItem('token')
   const handleSubmit = () => {
     const data = {
+      attendenceOwner:attendenceOwner,
       College: selectedCollege,
       School: selectedSchool,
       Department: selectedDepartment,
