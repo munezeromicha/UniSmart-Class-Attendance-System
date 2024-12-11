@@ -22,6 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       // Handle nested structure
+      console.log(response.data,'data from login')
       const userData = (response.data as { user: User; token: string }).user;
       const token = (response.data as { user: User; token: string }).token;
 
@@ -84,12 +85,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const checkAuth = async () => {
+    setUser(null)
     const token = localStorage.getItem('token');
     if (token) {
       try {
         const response = await ApiService.checkAuth();
         if (response.data) {
+          
           setUser(response.data as User);
+          console.log(response.data as User, 'user data tooo0000')
         }
       } catch (error) {
         console.error('Check auth error:', error);
@@ -99,6 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  
   return (
     <AuthContext.Provider value={{
       user,
