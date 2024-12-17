@@ -1,112 +1,148 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { BrowserQRCodeReader } from "@zxing/browser";
+import QrScanner from "qr-scanner";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-
-interface QRScanResult {
-  text: string;
-  rawBytes: Uint8Array;
-  numBits: number;
-  resultPoints: any[];
-  format: string;
-  timestamp: number;
-  resultMetadata: any;
+interface QRData {
+  attendenceOwner: string;
+  College: string;
+  School: string;
+  Department: string;
+  Class: string;
+  module: string;
+  latitude: number;
+  longitude: number;
+  timestamp: string;
 }
+const MAX_DISTANCE = 50;
+const QR_EXPIRY_TIME = 15 * 60 * 1000;
+
+const calculateDistance = (
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number => {
+  const R = 6371e3;
+  const φ1 = (lat1 * Math.PI) / 180;
+  const φ2 = (lat2 * Math.PI) / 180;
+  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+};
 
 export default function StudentDashboard() {
-  const [webScan, setWebScan] = useState<QRScanResult | null>(null);
-  const [cameraOn, setCameraOn] = useState(false);
+  const [scanning, setScanning] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
   const { user } = useAuth();
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const codeReader = useRef<BrowserQRCodeReader | null>(null);
+  const scannerRef = useRef<QrScanner | null>(null);
 
-  const camScan = (result: any) => {
-    if (result) {
-      console.log("QR Code Data:", result);
-      setWebScan(result);
-
-      try {
-        const qrData = JSON.parse(result.text);
-        if (validateQRData(qrData)) {
-          checkTimeAndRegister(qrData);
-        } else {
-          alert("Invalid QR Code data.");
-        }
-      } catch (error) {
-        console.error("Failed to parse QR code data:", error);
-        alert("Invalid QR Code format.");
-      }
-    }
-  };
-
-  const camError = (error: any) => {
-    if (error) {
-      console.error("QR Reader Error:", error);
-      toast.error( "An error occurred while accessing the camera. Please check your permissions.")
-     
-    }
-  };
-
-  const startCamera = async () => {
-    setCameraOn(true);
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        codeReader.current = new BrowserQRCodeReader();
-        codeReader.current.decodeFromVideoDevice(
-          undefined,
+  useEffect(() => {
+    if (activeTab === "scan") {
+      if (!scannerRef.current && videoRef.current) {
+        scannerRef.current = new QrScanner(
           videoRef.current,
-          (result, error) => {
-            if (result) {
-              camScan(result);
+          (result) => {
+            if (!scanning) {
+              handleQRScan(result.data);
             }
-            if (error && !(error instanceof Error)) {
-              camError(error);
-            }
-          }
+          },
+          { highlightScanRegion: true }
         );
+
+        scannerRef.current
+          .start()
+          .then(() => {
+            console.log("QR scanner started successfully");
+          })
+          .catch((error) => {
+            console.error("Failed to start QR scanner:", error);
+            toast.error("Unable to access camera. Please check permissions.");
+          });
       }
-    } catch (err) {
-      console.error("Error accessing the camera:", err);
-      toast.error( "Unable to access the camera. Please check your permissions.")
-    
+
+      // Cleanup QR scanner on unmount
+      return () => {
+        if (scannerRef.current) {
+          scannerRef.current.destroy();
+          scannerRef.current = null;
+        }
+      };
+    }
+  }, [activeTab]);
+
+  const handleQRScan = async (data: string) => {
+    setScanning(true);
+    try {
+      const qrData: QRData = JSON.parse(data);
+
+      if (!validateQRData(qrData)) {
+        toast.error("Invalid QR code format.");
+        return;
+      }
+
+      const qrTimestamp = new Date(qrData.timestamp).getTime();
+      if (Date.now() - qrTimestamp > QR_EXPIRY_TIME) {
+        toast.error("QR code has expired. Please use a valid QR code.");
+        return;
+      }
+
+      const deviceLocation = {
+        latitude: qrData.latitude,
+        longitude: qrData.longitude,
+      };
+
+      const distance = calculateDistance(
+        deviceLocation.latitude,
+        deviceLocation.longitude,
+        qrData.latitude,
+        qrData.longitude
+      );
+
+      if (distance > MAX_DISTANCE) {
+        toast.error(
+          `You must be within ${MAX_DISTANCE} meters of the designated location.`
+        );
+        return;
+      }
+
+      await checkTimeAndRegister(qrData);
+    } catch (error) {
+      console.error("Error processing QR code:", error);
+      toast.error("Failed to process QR code. Please try again.");
+    } finally {
+      setTimeout(() => setScanning(false), 2000);
     }
   };
 
-  const stopCamera = () => {
-    setCameraOn(false);
-    setWebScan(null);
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      const tracks = stream.getTracks();
-      tracks.forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
-    }
-  };
-  const validateQRData = (qrData: any) => {
+  const validateQRData = (data: any): data is QRData => {
     return (
-      qrData?.attendenceOwner &&
-      qrData?.College &&
-      qrData?.Department &&
-      qrData?.Class &&
-      qrData?.module
+      typeof data.attendenceOwner === "string" &&
+      typeof data.College === "string" &&
+      typeof data.School === "string" &&
+      typeof data.Department === "string" &&
+      typeof data.Class === "string" &&
+      typeof data.module === "string" &&
+      typeof data.latitude === "number" &&
+      typeof data.longitude === "number" &&
+      typeof data.timestamp === "string"
     );
   };
 
   const checkTimeAndRegister = async (qrData: any) => {
     const currentTime = new Date();
     const hours = currentTime.getHours();
-    if (hours >= 9 && hours <= 19) {
+    if (hours >= 9 && hours <=24) {
       await registerAttendance(qrData);
     } else {
-      toast.error( "Attendance can only be registered between 9:00 AM and 19am AM.")
-   
+      await secondAttendance(qrData);
     }
   };
 
@@ -137,40 +173,99 @@ export default function StudentDashboard() {
       const result = await response.json();
 
       if (response.ok) {
-      
-        toast.success( "Attendance successfully registered!")
-   
+        toast.success("Attendance successfully registered!");
+        if (result.data && result.data._id) {
+          toast.success("Attendance successfully registered!");
+          console.log(result.data, "data from scan qr code");
+          localStorage.setItem("id", result.data._id);
+        } else {
+          console.error("No _id in the response data:", result);
+          toast.error("Failed to register attendance. Please try again.");
+        }
       } else {
         console.error("Error registering attendance:", result);
-        toast.error( "Failed to register attendance. Please try again.")
-  
+        toast.error("Failed to register attendance. Please try again.");
       }
     } catch (error) {
       console.error("Error:", error);
-      toast.error( "An error occurred while registering attendance. Please try again.")
-    
+      toast.error(
+        "An error occurred while registering attendance. Please try again."
+      );
     }
   };
+  const secondAttendance = async (qrData: any) => {
+    console.log("second attendance");
+    const studentId = user?.registrationNumber;
+    const id = localStorage.getItem("id");
+    const currentTime = new Date();
+    const hours = currentTime.getHours();
+    if (hours >= 11 && hours <12) {
+      const studentId = user?.registrationNumber;
+      const id = localStorage.getItem("id");
+      if (!studentId || !id) {
+        toast.error("Student ID or Attendance ID not found.");
+        return;
+      }
+    
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/attendence/update/${studentId}/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${qrData.attendenceOwner}`,
+          },
+          body: JSON.stringify({
+            college: qrData.College,
+            school: qrData.School,
+            department: qrData.Department,
+            class: qrData.Class,
+            module: qrData.module,
+            start: false,
+            end: true,
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast.success("Attendance successfully updated!");
+      } else {
+        console.error("Error updating attendance:", result);
+        toast.error("Failed to update attendance. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(
+        "An error occurred while updating attendance. Please try again."
+      );
+    }
+  };
+}
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <ToastContainer />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex space-x-4 mb-4">
         <button
-          className={`py-2 px-2 border-b-2 ${
+          className={`py-2 px-4 rounded-t-lg ${
             activeTab === "profile"
-              ? "text-blue-500 border-blue-500"
-              : "text-gray-700 border-transparent"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
           }`}
           onClick={() => setActiveTab("profile")}
         >
           Profile
         </button>
         <button
-          className={`py-2 px-2  border-b-2 ${
+          className={`py-2 px-4 rounded-t-lg ${
             activeTab === "scan"
-              ? "text-blue-500 border-blue-500"
-              : "text-gray-700 border-transparent"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
           }`}
           onClick={() => setActiveTab("scan")}
         >
@@ -179,65 +274,17 @@ export default function StudentDashboard() {
       </div>
 
       <div className="bg-white shadow rounded-lg p-6">
-        {activeTab === "profile" && (
-          <>
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">
-              Welcome, {user?.firstName}
-            </h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                  Your Information
-                </h2>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Name:</span> {user?.firstName}{" "}
-                    {user?.lastName}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Email:</span> {user?.email}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Registration Number:</span>{" "}
-                    {user?.registrationNumber}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Department:</span>{" "}
-                    {user?.department}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Class:</span> {user?.class}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        {activeTab === "scan" && (
-          <>
-            {cameraOn ? (
-              <>
-                <video ref={videoRef} width="400px" height="auto" />
-                <button
-                  onClick={stopCamera}
-                  className="mt-4 bg-red-500 text-white py-2 px-4 rounded"
-                >
-                  Stop Camera
-                </button>
-                <p>
-                  {webScan?.text ? `QR Code: ${webScan.text}` : "Scanning..."}
-                </p>
-              </>
-            ) : (
-              <button
-                onClick={startCamera}
-                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded m-auto"
-              >
-                Start Camera
-              </button>
-            )}
-          </>
+        {activeTab === "profile" ? (
+          <div>
+            <h1>Welcome, {user?.firstName}</h1>
+          </div>
+        ) : (
+          <div className="text-center">
+            <video ref={videoRef} className="w-full rounded-lg" />
+            <p>
+              {scanning ? "Processing..." : "Align the QR code in the frame"}
+            </p>
+          </div>
         )}
       </div>
     </div>
