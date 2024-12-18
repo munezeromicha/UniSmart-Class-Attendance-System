@@ -43,6 +43,7 @@ export default function StudentDashboard() {
   const { user } = useAuth();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const scannerRef = useRef<QrScanner | null>(null);
+  
 
   useEffect(() => {
     if (activeTab === "scan") {
@@ -68,7 +69,6 @@ export default function StudentDashboard() {
           });
       }
 
-      // Cleanup QR scanner on unmount
       return () => {
         if (scannerRef.current) {
           scannerRef.current.destroy();
@@ -135,14 +135,25 @@ export default function StudentDashboard() {
       typeof data.timestamp === "string"
     );
   };
+  const stopScanner = () => {
+    setScanning(false);
+    if (scannerRef.current) {
+      scannerRef.current.destroy();
+      scannerRef.current = null;
+    }
+  };
 
   const checkTimeAndRegister = async (qrData: any) => {
     const currentTime = new Date();
     const hours = currentTime.getHours();
-    if (hours >= 9 && hours <=24) {
+    if (hours >= 9 && hours < 11) {
       await registerAttendance(qrData);
-    } else {
+    }
+    if (hours >= 11 && hours <= 12) {
       await secondAttendance(qrData);
+    } else {
+      toast.error("attendance taken between 9:00am-12am");
+      return;
     }
   };
 
@@ -173,11 +184,12 @@ export default function StudentDashboard() {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success("Attendance successfully registered!");
+        toast.success("Second attendance done successfully");
         if (result.data && result.data._id) {
           toast.success("Attendance successfully registered!");
           console.log(result.data, "data from scan qr code");
           localStorage.setItem("id", result.data._id);
+          stopScanner();
         } else {
           console.error("No _id in the response data:", result);
           toast.error("Failed to register attendance. Please try again.");
@@ -197,16 +209,7 @@ export default function StudentDashboard() {
     console.log("second attendance");
     const studentId = user?.registrationNumber;
     const id = localStorage.getItem("id");
-    const currentTime = new Date();
-    const hours = currentTime.getHours();
-    if (hours >= 11 && hours <12) {
-      const studentId = user?.registrationNumber;
-      const id = localStorage.getItem("id");
-      if (!studentId || !id) {
-        toast.error("Student ID or Attendance ID not found.");
-        return;
-      }
-    
+
     try {
       const response = await fetch(
         `http://localhost:5000/api/attendence/update/${studentId}/${id}`,
@@ -233,7 +236,9 @@ export default function StudentDashboard() {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success("Attendance successfully updated!");
+        toast.success("Second attendance done successfuly!");
+        stopScanner();
+        
       } else {
         console.error("Error updating attendance:", result);
         toast.error("Failed to update attendance. Please try again.");
@@ -245,7 +250,6 @@ export default function StudentDashboard() {
       );
     }
   };
-}
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
