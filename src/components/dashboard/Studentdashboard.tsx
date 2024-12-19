@@ -43,7 +43,6 @@ export default function StudentDashboard() {
   const { user } = useAuth();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const scannerRef = useRef<QrScanner | null>(null);
-  
 
   useEffect(() => {
     if (activeTab === "scan") {
@@ -91,6 +90,7 @@ export default function StudentDashboard() {
       const qrTimestamp = new Date(qrData.timestamp).getTime();
       if (Date.now() - qrTimestamp > QR_EXPIRY_TIME) {
         toast.error("QR code has expired. Please use a valid QR code.");
+        stopScanner();
         return;
       }
 
@@ -153,6 +153,7 @@ export default function StudentDashboard() {
       await secondAttendance(qrData);
     } else {
       toast.error("attendance taken between 9:00am-12am");
+      stopScanner()
       return;
     }
   };
@@ -192,16 +193,23 @@ export default function StudentDashboard() {
           stopScanner();
         } else {
           console.error("No _id in the response data:", result);
-          toast.error("Failed to register attendance. Please try again.");
+          const errorMessage =
+          result.message || "Failed to register attendance Please try again";
+          stopScanner()
+          toast.error(errorMessage);
+         
         }
       } else {
         console.error("Error registering attendance:", result);
-        toast.error("Failed to register attendance. Please try again.");
+        const errorMessage =
+        result.message || "Failed to register attendance Please try again";
+        stopScanner()
+      toast.error(errorMessage);
       }
     } catch (error) {
       console.error("Error:", error);
       toast.error(
-        "An error occurred while registering attendance. Please try again."
+        "An error occurred while registering attendance. Please try again"
       );
     }
   };
@@ -238,10 +246,12 @@ export default function StudentDashboard() {
       if (response.ok) {
         toast.success("Second attendance done successfuly!");
         stopScanner();
-        
       } else {
         console.error("Error updating attendance:", result);
-        toast.error("Failed to update attendance. Please try again.");
+        const errorMessage =
+        result.message || "Failed to update attendance. Please try again.";
+      toast.error(errorMessage);
+    
       }
     } catch (error) {
       console.error("Error:", error);

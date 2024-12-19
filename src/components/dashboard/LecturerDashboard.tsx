@@ -158,13 +158,15 @@ export default function LecturerDashboard() {
           const response = await fetch(
             `http://localhost:5000/api/attendence/class/${level}/today`
           );
+          const result = await response.json();
           if (response.ok) {
-            const result = await response.json();
+            
             console.log(result.data, "data from attendance");
             setAttendances(result.data);
             setLoading(false);
           } else {
-            setError("Failed to fetch attendances");
+        
+            setError(result.message||"failed to fect attendance");
             setLoading(false);
           }
         } catch (error) {
@@ -407,7 +409,7 @@ export default function LecturerDashboard() {
             {loading ? (
               <p>Loading...</p>
             ) : error ? (
-              <p className="text-red-500">{error}</p>
+              <p className="text-blue-500 text-2xl">{error}</p>
             ) : (
               <div>
                 {attendances.length === 0 ? (
