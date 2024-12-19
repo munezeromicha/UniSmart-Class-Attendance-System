@@ -43,25 +43,35 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
   };
 
   useEffect(() => {
-    if (user?.role === 'CLASS_REP') {
+    if (user?.role === 'CLASS_REP' && user.class) {
       setFormData(prev => ({
         ...prev,
-        role: 'STUDENT'
+        role: 'STUDENT',
+        class: user.class
       }));
     }
-  }, [user?.role]);
+  }, [user?.role, user?.class]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      // Ensure role is set for CLASS_REP
+      // Create invitation data based on role
       const inviteData = {
         email: formData.email,
         role: user?.role === 'CLASS_REP' ? 'STUDENT' : formData.role,
-        department: formData.department
+        department: formData.department,
+        // Include additional fields based on role
+        ...(formData.role === 'HOD' && { school: formData.school }),
+        ...(formData.role === 'CLASS_REP' && { class: formData.class }),
+        ...(user?.role === 'CLASS_REP' && { class: formData.class })
       };
+
+      // Validate required fields for student invitations
+      if (user?.role === 'CLASS_REP' && (!inviteData.department || !inviteData.class)) {
+        throw new Error('Department and class must be provided when inviting students');
+      }
 
       const response = await fetch('http://localhost:5000/api/invitations', {
         method: 'POST',
@@ -83,7 +93,7 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
         role: user?.role === 'CLASS_REP' ? 'STUDENT' : '',
         department: '',
         school: '',
-        class: ''
+        class: user?.role === 'CLASS_REP' && user.class ? user.class : ''
       });
     } catch (error) {
       console.error('Invitation error:', error);
@@ -135,7 +145,6 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
       <input type="hidden" value="STUDENT" onChange={(e) => setFormData({ ...formData, role: e.target.value })} />
     )}
 
-      {/* School field - Only for HOD invitations */}
       {user?.role === 'ADMIN' && formData.role === 'HOD' && (
         <div>
           <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
@@ -169,8 +178,22 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
           onChange={(e) => setFormData({ ...formData, department: e.target.value })}
           aria-label="Select department"
         >
-          <option value="">Select Department</option>
+          <option value="">Select department</option>
           {departments.map((dept) => (
+            <option key={dept} value={dept}>
+              {dept}
+            </option>
+          ))}
+        </select>
+        <select
+          required
+          value={formData.class}
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+          onChange={(e) => setFormData({ ...formData, class: e.target.value })}
+          aria-label="Select class"
+        >
+          <option value="">Select class</option>
+          {(classes || []).map((dept) => (
             <option key={dept} value={dept}>
               {dept}
             </option>
@@ -178,7 +201,6 @@ export default function InviteUser({ departments, classes }: InviteUserProps) {
         </select>
       </div>
 
-      {/* Class field - Only for CLASS_REP invitations */}
       {formData.role === 'CLASS_REP' && classes && (
         <div>
           <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>

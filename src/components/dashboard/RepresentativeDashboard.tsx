@@ -21,6 +21,14 @@ export default function RepresentativeDashboard() {
     "Law",
   ]);
 
+  const [classes] = useState([
+    "Level 1",
+    "Level 2",
+    "Level 3",
+    "Level 4",
+    "Level 5",
+  ]);
+
   useEffect(() => {
     fetchClassmates();
   }, []);
@@ -55,7 +63,7 @@ export default function RepresentativeDashboard() {
           <InviteUser
             role="STUDENT"
             departments={departments}
-            classes={[user?.class || '']}
+            classes={classes}
           />
         </div>
 

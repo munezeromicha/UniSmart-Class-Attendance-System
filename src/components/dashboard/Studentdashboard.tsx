@@ -149,7 +149,7 @@ export default function StudentDashboard() {
     if (hours >= 9 && hours < 11) {
       await registerAttendance(qrData);
     }
-    if (hours >= 11 && hours <= 12) {
+    else if (hours >= 11 && hours <= 12) {
       await secondAttendance(qrData);
     } else {
       toast.error("attendance taken between 9:00am-12am");
@@ -250,7 +250,7 @@ export default function StudentDashboard() {
       );
     }
   };
-
+console.log(user?.class,'data from user')
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <ToastContainer position="top-right" autoClose={3000} />
@@ -280,7 +280,12 @@ export default function StudentDashboard() {
       <div className="bg-white shadow rounded-lg p-6">
         {activeTab === "profile" ? (
           <div>
-            <h1>Welcome, {user?.firstName}</h1>
+            <h1>Welcome, {user?.firstName} {user?.lastName}</h1>
+            <h3>Email: {user?.email}</h3>
+            <h3>Department: {user?.department}</h3>
+            <h3>Class: {user?.class}</h3>
+            <h3>Registration Number: {user?.registrationNumber}</h3>
+
           </div>
         ) : (
           <div className="text-center">
