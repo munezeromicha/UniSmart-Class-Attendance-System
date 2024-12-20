@@ -1,0 +1,10 @@
+.hover-to-read.hover-enabled {
+    cursor: help;
+    position: relative;
+  }
+  
+  .hover-to-read.hover-enabled:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+    border-radius: 4px;
+  }

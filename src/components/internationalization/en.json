@@ -2,6 +2,32 @@
     "landingPage": {
       "mainContent": "UniSmart Class Attendance System"
     },
+    "footer": {
+      "rights": "All rights reserved",
+      "contact": "Contact Us",
+      "email": "contact@example.com",
+      "address": "123 Main Street, City, Country",
+      "phone": "123-456-7890",
+      "copyright": "© {year} UniSmart Class Attendance System. All rights reserved.",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "about": "About Us",
+      "services": "Services",
+      "products": "Products",
+      "support": "Support",
+      "resources": "Resources",
+      "blog": "Blog",
+      "contactUs": "Contact Us",
+      "careers": "Careers",
+      "partners": "Partners",
+      "events": "Events",
+      "news": "News",
+      "faq": "FAQ",
+      "feedback": "Feedback",
+      "documentation": "Documentation",
+      "company": "Company",
+      "social": "Social"
+    },
     "accessibility": {
       "enableScreenReader": "Enable Screen Reader",
       "selectLanguage": "Select Language",
@@ -30,7 +56,10 @@
       "read": "Read page content",
       "active": "Active",
       "reading": "Reading...",
-      "voiceControl": "Voice Control..."
+      "voiceControl": "Voice Control...",
+      "hoverRead": "Hover to read",
+      "hoverReadActive": "Hover to read active",
+      "toggleHoverToRead": "Toggle Hover to read"
     },
     "languages": {
       "en": "English",

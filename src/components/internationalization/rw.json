@@ -2,6 +2,32 @@
   "landingPage": {
     "mainContent": "Sisitemu ya UniSmart yo Gufata Abitabiriye"
   },
+  "footer": {
+    "rights": "Uburenganzira bwose burafitwe",
+    "contact": "Twandikire",
+    "email": "contact@example.com",
+    "address": "123 Umuhanda Munini, Umujyi, Igihugu",
+    "phone": "123-456-7890",
+    "copyright": "© {year} Sisitemu ya UniSmart yo Gufata Abitabiriye. Uburenganzira bwose burafitwe.",
+    "privacy": "Politiki y'Ibanga",
+    "terms": "Amabwiriza yo Gukoresha",
+    "about": "Turi ba nde",
+    "services": "Serivisi",
+    "products": "Ibicuruzwa",
+    "support": "Ubufasha",
+    "resources": "Ibikoresho",
+    "blog": "Blog",
+    "contactUs": "Twandikire",
+    "careers": "Akazi",
+    "partners": "Abafatanyabikorwa",
+    "events": "Ibikorwa",
+    "news": "Amakuru",
+    "faq": "Ibibazo Bikunze Kubazwa",
+    "feedback": "Ibitekerezo",
+    "documentation": "Inyandiko",
+    "company": "Sosiyeti",
+    "social": "Imbuga Nkoranyambaga"
+  },
   "accessibility": {
     "enableScreenReader": "Kora Musomyi wa Ecran",
     "selectLanguage": "Hitamo Ururimi",

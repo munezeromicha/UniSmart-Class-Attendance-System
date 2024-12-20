@@ -32,6 +32,7 @@ const RoleProtectedRoute = ({ children, allowedRole }: RoleProtectedRouteProps) 
 );
 
 export default function App() {
+  
   return (
     <BrowserRouter>
       <AuthProvider>

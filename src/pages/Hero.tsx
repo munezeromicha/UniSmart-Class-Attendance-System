@@ -17,7 +17,6 @@ const Hero: React.FC = () => {
     },
   };
 
-  // Animation for connecting lines
   const connectingLines = {
     initial: { pathLength: 0, opacity: 0 },
     animate: {
@@ -45,9 +44,7 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Floating Icons System Demonstration */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Academic Process Flow */}
         <motion.div
           className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2"
           {...floatingAnimation}
@@ -55,7 +52,6 @@ const Hero: React.FC = () => {
           <AcademicProcessIcon />
         </motion.div>
 
-        {/* User Interaction Flow */}
         <motion.div
           className="absolute top-1/4 right-1/4 transform translate-x-1/2 -translate-y-1/2"
           {...floatingAnimation}
@@ -64,7 +60,6 @@ const Hero: React.FC = () => {
           <UserInteractionIcon />
         </motion.div>
 
-        {/* Digital Learning Flow */}
         <motion.div
           className="absolute bottom-1/4 left-1/4 transform -translate-x-1/2 translate-y-1/2"
           {...floatingAnimation}
@@ -73,7 +68,6 @@ const Hero: React.FC = () => {
           <DigitalLearningIcon />
         </motion.div>
 
-        {/* Mobile Access Flow */}
         <motion.div
           className="absolute bottom-1/4 right-1/4 transform translate-x-1/2 translate-y-1/2"
           {...floatingAnimation}
@@ -82,7 +76,6 @@ const Hero: React.FC = () => {
           <MobileAccessIcon />
         </motion.div>
 
-        {/* Connecting Lines */}
         <svg
           className="absolute inset-0 w-full h-full"
           style={{ pointerEvents: "none" }}
@@ -97,7 +90,6 @@ const Hero: React.FC = () => {
         </svg>
       </div>
 
-      {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto">
         <motion.div
           className="text-center"
@@ -174,7 +166,6 @@ const Hero: React.FC = () => {
   );
 };
 
-// Add these icon components at the bottom of the file, before the export
 const AcademicProcessIcon = () => (
   <svg
     className="w-12 h-12 text-purple-500"
@@ -185,7 +176,6 @@ const AcademicProcessIcon = () => (
   </svg>
 );
 
-// Add similar components for other missing icons:
 const UserInteractionIcon = () => (
   <svg
     className="w-12 h-12 text-blue-500"

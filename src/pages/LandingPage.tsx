@@ -7,6 +7,7 @@ import Features from './Features';
 import HowItWorks from './HowItWorks';
 import Testimonials from './Testimonials';
 import Contact from './Contact';
+import Footer from './Footer';
 
 const LandingPage: React.FC = () => {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ const LandingPage: React.FC = () => {
       <HowItWorks />
       <Testimonials />
       <Contact />
+      <Footer />
 
       {isScreenReaderEnabled && (
         <div className="sr-only" role="alert">
