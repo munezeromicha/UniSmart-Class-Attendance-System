@@ -1,22 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import InviteUser from "../auth/InviteUser";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTheme } from '../../context/ThemeContext';
-interface HOD {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  department: string;
-  status: "active" | "disabled";
-}
+// interface HOD {
+//   _id: string;
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   department: string;
+//   status: "active" | "disabled";
+// }
 
 export default function AdminDashboard() {
   const { theme } = useTheme();
-  const [hods, setHods] = useState<HOD[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [hods, setHods] = useState<HOD[]>([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState<string | null>(null);
   const [departments] = useState([
     "Computer Science",
     "Engineering",
@@ -25,105 +25,106 @@ export default function AdminDashboard() {
     "Law",
   ]);
 
-  useEffect(() => {
-    fetchHODs();
-  }, []);
+  // useEffect(() => {
+  //   fetchHODs();
+  // }, []);
 
-  const fetchHODs = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch("http://localhost:5000/api/users/hods", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const data = await response.json();
+  // const fetchHODs = async () => {
+  //   // setIsLoading(true);
+  //   setError(null);
+  //   try {
+  //     const response = await fetch("http://localhost:5000/api/users/hods", {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to fetch HODs");
-      }
+  //     if (!response.ok) {
+  //       throw new Error(data.message || "Failed to fetch HODs");
+  //     }
 
-      if (data.success && Array.isArray(data.data)) {
-        setHods(data.data);
-      } else {
-        console.error("Unexpected data structure:", data);
-        setHods([]);
-      }
-    } catch (error) {
-      console.error("Failed to fetch HODs:", error);
-      setError(error instanceof Error ? error.message : "Failed to fetch HODs");
-      setHods([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     if (data.success && Array.isArray(data.data)) {
+  //       setHods(data.data);
+  //     } else {
+  //       console.error("Unexpected data structure:", data);
+  //       setHods([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to fetch HODs:", error);
+  //     setError(error instanceof Error ? error.message : "Failed to fetch HODs");
+  //     setHods([]);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  const toggleHODStatus = async (
-    hodId: string,
-    newStatus: "active" | "disabled"
-  ) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/users/${hodId}/toggle-status`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ status: newStatus }),
-        }
-      );
+  // const toggleHODStatus = async (
+  //   hodId: string,
+  //   newStatus: "active" | "disabled"
+  // ) => {
+  //   try {
+  //     const response = await fetch(
+  //       `http://localhost:5000/api/users/${hodId}/toggle-status`,
+  //       {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //         body: JSON.stringify({ status: newStatus }),
+  //       }
+  //     );
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to update HOD status");
-      }
+  //     if (!response.ok) {
+  //       throw new Error(data.message || "Failed to update HOD status");
+  //     }
 
-      fetchHODs();
-    } catch (error) {
-      console.error("Failed to update HOD status:", error);
-      setError(
-        error instanceof Error ? error.message : "Failed to update HOD status"
-      );
-    }
-  };
+  //     fetchHODs();
+  //   } catch (error) {
+  //     console.error("Failed to update HOD status:", error);
+  //     setError(
+  //       error instanceof Error ? error.message : "Failed to update HOD status"
+  //     );
+  //   }
+  // };
 
-  const deleteHOD = async (hodId: string) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this HOD account? This action cannot be undone."
-      )
-    ) {
-      return;
-    }
+  // const deleteHOD = async (hodId: string) => {
+  //   if (
+  //     !window.confirm(
+  //       "Are you sure you want to delete this HOD account? This action cannot be undone."
+  //     )
+  //   ) {
+  //     return;
+  //   }
 
-    try {
-      const response = await fetch(`http://localhost:5000/api/users/${hodId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+  //   try {
+  //     const response = await fetch(`http://localhost:5000/api/users/${hodId}`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to delete HOD");
-      }
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       throw new Error(errorData.message || "Failed to delete HOD");
+  //     }
 
-      toast.success("HOD account deleted successfully");
-      fetchHODs(); // Refresh the list
-    } catch (error) {
-      console.error("Failed to delete HOD:", error);
-      toast.error(
-        error instanceof Error ? error.message : "Failed to delete HOD"
-      );
-    }
-  };
+  //     toast.success("HOD account deleted successfully");
+  //     fetchHODs(); // Refresh the list
+  //   } catch (error) {
+  //     console.error("Failed to delete HOD:", error);
+  //     toast.error(
+  //       error instanceof Error ? error.message : "Failed to delete HOD"
+  //     );
+  //   }
+  // };
 
   return (
+    <div className={` min-h-screen ${theme === 'dark'? 'bg-background-dark' : `bg-background-light`}`}>
     <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ${
       theme === "dark"
         ? "bg-background-dark"
@@ -133,11 +134,11 @@ export default function AdminDashboard() {
         Admin Dashboard
       </h1>
 
-      {error && (
+      {/* {error && (
         <div className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
           <span className="block sm:inline">{error}</span>
         </div>
-      )}
+      )} */}
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <div className={`rounded-lg shadow ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
@@ -148,7 +149,7 @@ export default function AdminDashboard() {
             <InviteUser departments={departments} role="HOD" />
           </div>
         </div>
-
+{/* 
         <div className={`rounded-lg shadow ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <div className="p-6">
             <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
@@ -224,8 +225,10 @@ export default function AdminDashboard() {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
+    </div>
+
   );
 }
