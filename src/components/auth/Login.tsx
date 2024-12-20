@@ -1,7 +1,7 @@
 import { useState } from "react";
-// import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../hooks/useAuth";
 import { useTheme } from "../../context/ThemeContext";
+import { FaGraduationCap } from "react-icons/fa";
 
 export default function Login() {
   const { theme } = useTheme();
@@ -10,7 +10,6 @@ export default function Login() {
     password: "",
   });
   const [error, setError] = useState("");
-  // const navigate = useNavigate();
   const { login, isLoading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,13 +25,13 @@ export default function Login() {
       console.log("Attempting login...");
       await login(formData.email, formData.password);
       console.log("Login successful");
-      // navigate('/', { replace: true });
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Login failed. Please try again."
       );
     }
   };
+
 
   return (
     <div
@@ -43,13 +42,20 @@ export default function Login() {
       } flex flex-col justify-center py-12 sm:px-6 lg:px-8`}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2
-          className={`text-center text-3xl font-extrabold ${
-            theme === "dark" ? "text-white" : "text-gray-800"
-          }`}
-        >
-          Sign into your account
-        </h2>
+      <div className="flex flex-col items-center">
+      <FaGraduationCap 
+            className={`h-16 w-16 mb-4 ${
+              theme === "dark" ? "text-white" : "text-gray-800"
+            } animate-bounce hover:animate-pulse transition-all duration-300`} 
+          />
+          <h2
+            className={`text-center text-3xl font-extrabold ${
+              theme === "dark" ? "text-white" : "text-gray-800"
+            }`}
+          >
+            Sign into your account
+          </h2>
+        </div>
       </div>
 
       <div className={`mt-8 sm:mx-auto sm:w-full sm:max-w-md`}>
