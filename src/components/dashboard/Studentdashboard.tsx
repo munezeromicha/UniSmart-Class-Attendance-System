@@ -213,6 +213,7 @@ export default function StudentDashboard() {
 
   const registerAttendance = async (qrData: QRData) => {
     try {
+      
       const response = await fetch(
         "http://localhost:5000/api/attendence/register",
         {
