@@ -2,6 +2,32 @@
   "landingPage": {
     "mainContent": "Système de Présence UniSmart"
   },
+    "footer": {
+      "rights": "Tous droits réservés",
+      "contact": "Contactez-nous",
+      "email": "contact@example.com",
+      "address": "123 Rue Principale, Ville, Pays",
+      "phone": "123-456-7890",
+      "copyright": "© {year} Système de Présence UniSmart. Tous droits réservés.",
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d'utilisation",
+      "about": "À propos de nous",
+      "services": "Services",
+      "products": "Produits",
+      "support": "Support",
+      "resources": "Ressources",
+      "blog": "Blog",
+      "contactUs": "Contactez-nous",
+      "careers": "Carrières",
+      "partners": "Partenaires",
+      "events": "Événements",
+      "news": "Actualités",
+      "faq": "FAQ",
+      "feedback": "Retour d'expérience",
+      "documentation": "Documentation",
+      "company": "Entreprise",
+      "social": "Réseaux sociaux"
+    },
   "accessibility": {
     "enableScreenReader": "Activer le Lecteur d'Écran",
     "selectLanguage": "Sélectionner la Langue",

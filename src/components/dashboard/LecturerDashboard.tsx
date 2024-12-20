@@ -4,11 +4,14 @@ import { QRCodeCanvas } from "qrcode.react";
 import { io } from "socket.io-client";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTheme } from '../../context/ThemeContext';
+
 interface Location {
   latitude: number;
   longitude: number;
 }
 export default function LecturerDashboard() {
+  const { theme } = useTheme();
   const [attendances, setAttendances] = useState<any[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -40,21 +43,28 @@ export default function LecturerDashboard() {
       "School of Engineering",
       "School of Science",
       "School of Architecture and Built Environment",
+
+            
     ],
     "College of Business and Economics (CBE)": [
       "School of Business",
       "School of Economics",
+      "School of Accounting",
+      "School of Marketing",
+      "School of Management",
     ],
   };
 
   const schoolsWithDepartments = {
     "School of Engineering": [
+      "Computer Science",
       "Civil Engineering",
       "Mechanical Engineering",
       "Electrical Engineering",
     ],
     "School of Science": ["Physics", "Chemistry", "Biology"],
     "School of Architecture and Built Environment": [
+
       "Urban Planning",
       "Architecture",
       "Construction Management",
@@ -266,24 +276,26 @@ export default function LecturerDashboard() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto bg-blue-50  px-4 sm:px-6 lg:px-8 py-8">
+    <div className={`min-h-screen w-full ${theme === 'dark' ? 'bg-background-dark text-white' : 'bg-background-light text-gray-800'}`}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <ToastContainer />
      
       
-      <h1 className="text-2xl font-bold text-gray-900">
-        Welcome, {user?.firstName}
+      <h1 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+        Welcome, {user?.firstName} {user?.lastName}
       </h1>
 
       {showForm ? (
-        <div className="bg-white shadow rounded-lg p-6 mt-4">
+        <div className={`shadow-xl ${theme === 'dark' ? 'shadow-gray-700' : 'shadow-gray-300'} rounded-lg p-6 mt-4 ${theme === 'dark' ? 'bg-background-dark text-white' : 'bg-background-light text-gray-800'}`}>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className={`block text-sm font-medium text-gray-700 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
               Select College
             </label>
             <select
               value={selectedCollege}
               onChange={handleCollegeChange}
-              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              aria-label="Select College"
+              className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md ${theme === 'dark' ? 'bg-background-dark text-white' : 'bg-background-light text-gray-800'}`}
             >
               <option value="" disabled>
                 Select a College
@@ -297,13 +309,14 @@ export default function LecturerDashboard() {
 
             {selectedCollege && (
               <>
-                <label className="block text-sm font-medium text-gray-700 mt-4">
+                <label className={`block text-sm font-medium text-gray-700 mt-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
                   Select School
                 </label>
                 <select
                   value={selectedSchool}
                   onChange={handleSchoolChange}
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  aria-label="Select School"
+                  className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md ${theme === 'dark' ? 'bg-background-dark text-white' : 'bg-background-light text-gray-800'}`}
                 >
                   <option value="" disabled>
                     Select a School
@@ -321,13 +334,14 @@ export default function LecturerDashboard() {
 
             {selectedSchool && (
               <>
-                <label className="block text-sm font-medium text-gray-700 mt-4">
+                <label className={`block text-sm font-medium text-gray-700 mt-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
                   Select Department
                 </label>
                 <select
                   value={selectedDepartment}
                   onChange={handleDepartmentChange}
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  aria-label="Select Department"
+                  className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md ${theme === 'dark' ? 'bg-background-dark text-white' : 'bg-background-light text-gray-800'}`}
                 >
                   <option value="" disabled>
                     Select a Department
@@ -345,13 +359,14 @@ export default function LecturerDashboard() {
 
             {selectedDepartment && (
               <>
-                <label className="block text-sm font-medium text-gray-700 mt-4">
+                <label className={`block text-sm font-medium text-gray-700 mt-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
                   Select Class
                 </label>
                 <select
                   value={selectedClass}
                   onChange={(e) => setSelectedClass(e.target.value)}
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md ${theme === 'dark' ? 'bg-background-dark text-white' : 'bg-background-light text-gray-800'}`}
+                  aria-label="Select Class"
                 >
                   <option value="" disabled>
                     Select a Class
@@ -364,13 +379,13 @@ export default function LecturerDashboard() {
                     </option>
                   ))}
                 </select>
-                <label className="block text-sm font-medium text-gray-700 mt-4">
+                <label className={`block text-sm font-medium text-gray-700 mt-4 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
                   Enter Module Name
                 </label>
                 <input
                   type="text"
                   placeholder="Enter module name"
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md ${theme === 'dark' ? 'bg-background-dark text-white' : 'bg-background-light text-gray-800'}`}
                   value={selectedModule}
                   onChange={(e) => setSelectedModule(e.target.value)}
                 />
@@ -390,7 +405,6 @@ export default function LecturerDashboard() {
       ) : (
         <div className="flex">
           <div className="flex items-center flex-col py-5">
-            {/* <h2 className="text-lg text-gray-700 text-center">Generated QR Code</h2> */}
             <QRCodeCanvas value={qrData} size={300} />
           </div>
           <div className="w-[80%] px-4 relative top-[-24px]">
@@ -457,6 +471,7 @@ export default function LecturerDashboard() {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }
